@@ -92,7 +92,7 @@ class voice_cmd_pr2:
             self.pub_.publish(self.msg)
             self.soundhandle.say("robot look", self.voice)
 
- cleanup(self):
+    def cleanup(self):
         # stop the robot!
         j = Joy()
         self.pub_.publish(j)
