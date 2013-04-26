@@ -41,9 +41,27 @@ class voice_cmd_pr2:
         axes = [0]*20
         motion_buttons = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
         open_right_buttons = list(motion_buttons)
+        close_right_buttons = list(motion_buttons)
+        open_left_buttons = list(motion_buttons)
+        close_left_buttons = list(motion_buttons)
+        select_buttons = list(motion_buttons)
+        start_buttons = list(motion_buttons)
+        triangle_buttons = list(motion_buttons)
         #13 = right open
-        #open_right_buttons[13] = 1
-        open_right_buttons[11] = 1
+        # 0  1  2  3  4  5  6  7  8  9  0  1  2  3  4  5  6
+        #[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+        #[0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        #[0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        #[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        #[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        #[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+        open_right_buttons[13] = 1
+        close_right_buttons[15] = 1
+        open_left_buttons[5] = 1
+        close_left_buttons[7] = 1
+        select_buttons[0] = 1
+        start_buttons[3] = 1
+        triangle_buttons[12] = 1
         if msg.data.find("open right gripper") > -1:
             #print "got open right gripper"
             #self.msg = Joy(Header(),[-0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.493912935256958, 0.0, -0.0, -0.613559365272522, -0.0, -0.0, -0.0, -0.0, 0.07150902599096298, 0.0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0])
