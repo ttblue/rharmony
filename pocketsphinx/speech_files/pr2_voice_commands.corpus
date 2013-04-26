@@ -1,1 +1,7 @@
-right gripper open
+open right gripper
+close right gripper
+open left gripper
+close left gripper
+start recording
+stop recording
+robot look

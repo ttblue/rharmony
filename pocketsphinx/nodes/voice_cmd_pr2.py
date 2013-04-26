@@ -39,14 +39,15 @@ class voice_cmd_pr2:
     def speechCb(self, msg):
         rospy.loginfo(msg.data)
         axes = [0]*20
+	default_buttons = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         motion_buttons = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
         open_right_buttons = list(motion_buttons)
         close_right_buttons = list(motion_buttons)
         open_left_buttons = list(motion_buttons)
         close_left_buttons = list(motion_buttons)
-        select_buttons = list(motion_buttons)
-        start_buttons = list(motion_buttons)
-        triangle_buttons = list(motion_buttons)
+        select_buttons = list(default_buttons)
+        start_buttons = list(default_buttons)
+        triangle_buttons = list(default_buttons)
         #13 = right open
         # 0  1  2  3  4  5  6  7  8  9  0  1  2  3  4  5  6
         #[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
@@ -63,14 +64,35 @@ class voice_cmd_pr2:
         start_buttons[3] = 1
         triangle_buttons[12] = 1
         if msg.data.find("open right gripper") > -1:
-            #print "got open right gripper"
-            #self.msg = Joy(Header(),[-0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -0.493912935256958, 0.0, -0.0, -0.613559365272522, -0.0, -0.0, -0.0, -0.0, 0.07150902599096298, 0.0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0])
             self.msg = Joy(Header(), axes, open_right_buttons)
-            #print "got open right gripper"
-            
             self.pub_.publish(self.msg)
-            self.soundhandle.say("okay fine i will open right gripper", self.voice)
-    def cleanup(self):
+            self.soundhandle.say("open right gripper", self.voice)
+        if msg.data.find("close right gripper") > -1:
+            self.msg = Joy(Header(), axes, close_right_buttons)
+            self.pub_.publish(self.msg)
+            self.soundhandle.say("close right gripper", self.voice)
+        if msg.data.find("open left gripper") > -1:
+            self.msg = Joy(Header(), axes, open_left_buttons)
+            self.pub_.publish(self.msg)
+            self.soundhandle.say("open left gripper", self.voice)
+        if msg.data.find("close left gripper") > -1:
+            self.msg = Joy(Header(), axes, close_left_buttons)
+            self.pub_.publish(self.msg)
+            self.soundhandle.say("close left gripper", self.voice)
+   	if msg.data.find("start recording") > -1:
+            self.msg = Joy(Header(), axes, select_buttons)
+            self.pub_.publish(self.msg)
+            self.soundhandle.say("start recording", self.voice)
+        if msg.data.find("stop recording") > -1:
+            self.msg = Joy(Header(), axes, start_buttons)
+            self.pub_.publish(self.msg)
+            self.soundhandle.say("stop recording", self.voice)
+        if msg.data.find("robot look") > -1:
+            self.msg = Joy(Header(), axes, triangle_buttons)
+            self.pub_.publish(self.msg)
+            self.soundhandle.say("robot look", self.voice)
+
+ cleanup(self):
         # stop the robot!
         j = Joy()
         self.pub_.publish(j)
@@ -81,4 +103,3 @@ if __name__=="__main__":
         voice_cmd_pr2()
     except:
         pass
-
