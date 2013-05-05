@@ -15,7 +15,7 @@ voice_cmd_vel.py is a simple demo of speech recognition.
 import roslib; roslib.load_manifest('pocketsphinx')
 import rospy
 import math
-
+import subprocess
 from std_msgs.msg import String
 
 from sensor_msgs.msg import Joy
@@ -40,8 +40,9 @@ class voice_cmd_pr2:
         r = rospy.Rate(10.0)
         if self.loud:
             self.soundhandle = SoundClient()
-            self.voice = 'voice_kal_diphone'
-            self.soundhandle.say("open gripper", self.voice)
+            self.voice = 'voice_don_diphone'
+	    #self.voice = 'voice_kal_diphone'
+            #self.soundhandle.say("open gripper", self.voice)
         while not rospy.is_shutdown():
         #    self.pub_.publish(self.msg)
             r.sleep()
@@ -74,41 +75,15 @@ class voice_cmd_pr2:
         select_buttons[0] = 1
         start_buttons[3] = 1
         triangle_buttons[12] = 1
-        if msg.data.find("open right gripper") > -1:
-            self.msg = Joy(Header(), axes, open_right_buttons)
-            self.pub_.publish(self.msg)
-            if self.loud:
-                self.soundhandle.say("open right gripper", self.voice)
-        if msg.data.find("close right gripper") > -1:
-            self.msg = Joy(Header(), axes, close_right_buttons)
-            self.pub_.publish(self.msg)
-            if self.loud:
-                self.soundhandle.say("close right gripper", self.voice)
-        if msg.data.find("open left gripper") > -1:
-            self.msg = Joy(Header(), axes, open_left_buttons)
-            self.pub_.publish(self.msg)
-            if self.loud:
-                self.soundhandle.say("open left gripper", self.voice)
-        if msg.data.find("close left gripper") > -1:
-            self.msg = Joy(Header(), axes, close_left_buttons)
-            self.pub_.publish(self.msg)
-            if self.loud:
-                self.soundhandle.say("close left gripper", self.voice)
-   	if msg.data.find("start recording") > -1:
-            self.msg = Joy(Header(), axes, select_buttons)
-            self.pub_.publish(self.msg)
-            if self.loud:
-                self.soundhandle.say("start recording", self.voice)
-        if msg.data.find("stop recording") > -1:
-            self.msg = Joy(Header(), axes, start_buttons)
-            self.pub_.publish(self.msg)
-            if self.loud:
-                self.soundhandle.say("stop recording", self.voice)
-        if msg.data.find("robot look") > -1:
-            self.msg = Joy(Header(), axes, triangle_buttons)
-            self.pub_.publish(self.msg)
-            if self.loud:
-                self.soundhandle.say("robot look", self.voice)
+        
+        commands = ["open right gripper", "close right gripper", "open left gripper", "close left gripper","start recording", "stop recording", "robot look"]
+        buttons = [open_right_buttons, close_right_buttons, open_left_buttons, close_left_buttons, select_buttons, start_buttons, triangle_buttons]
+        for i, command in enumerate(commands):
+            if msg.data.find(command) > -1:
+                self.msg = Joy(Header(), axes, buttons[i])
+                self.pub_.publish(self.msg)
+                if self.loud:
+                    subprocess.call("espeak -v en '%s'"%(command), shell=True)
 
     def cleanup(self):
         # stop the robot!
