@@ -1,0 +1,11 @@
+<launch>
+
+  <node name="recognizer" pkg="pocketsphinx" type="recognizer.py">
+    <param name="lm" value="$(find pocketsphinx)/speech_files/demo_recording.lm"/>
+    <param name="dict" value="$(find pocketsphinx)/speech_files/demo_recording.dic"/>
+  </node>
+
+  <node name="voice_cmd_demo_recording" pkg="pocketsphinx" type="voice_cmd_demo_recording.py" output="screen">
+  </node>
+
+</launch>

@@ -1,0 +1,9 @@
+begin recording
+stop recording
+begin segment
+stop segment
+robot look
+new segment
+cancel recording
+finish recording
+done session
