@@ -8,11 +8,12 @@ import subprocess
 from std_msgs.msg import String
 import time
 
-
 from pocketsphinx.msg import Segment
 import roslib
 from std_msgs.msg import Header
 from sound_play.libsoundplay import SoundClient
+
+
 
 # parent_state = {"begin recording": ["all start", "finish recording", "cancel recording"],
 #                 "robot look": ["begin recording", "stop segment"],
@@ -61,7 +62,7 @@ class voice_cmd_demo_recording:
         #    self.pub_.publish(self.msg)
             r.sleep()
         
-        time.sleep(1)
+        time.sleep(2.5)
         if self.loud:
             subprocess.call("espeak -v en 'shutting down'", shell=True)
     #self.soundhandle = SoundClient()
@@ -74,6 +75,7 @@ class voice_cmd_demo_recording:
             if msg.data.find(command) > -1:
                 print command
                 if self.current_state not in parent_state[command]:
+                    
                     if self.loud:
                         subprocess.call("espeak -v en 'still in state %s'"%(self.current_state), shell=True)
                 else:
