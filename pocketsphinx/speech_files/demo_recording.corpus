@@ -1,5 +1,5 @@
 begin recording
-stop recording
+check demo
 begin segment
 stop segment
 robot look

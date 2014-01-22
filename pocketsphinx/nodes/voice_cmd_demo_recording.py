@@ -25,14 +25,25 @@ from sound_play.libsoundplay import SoundClient
 #                 "cancel recording": ["stop recording", "begin recording", "robot look", "begin segment", "stop segment", "new segment"]}
 # old parent stuff
 
+# parent_state = {"begin recording": ["all start", "finish recording", "cancel recording"],
+#                 "robot look": ["begin recording", "stop segment", "robot look"],
+#                 "begin segment": ["robot look"],
+#                 "stop segment": ["begin segment", "new segment"],
+#                 "new segment": ["stop segment","begin recording"],
+#                 "stop recording": ["stop segment"],
+#                 "finish recording": ["stop recording", "stop segment"],
+#                 "cancel recording": ["stop recording", "begin recording", "robot look", "begin segment", "stop segment", "new segment"],
+#                 "done session": ["finish recording", "cancel recording", "all start"]}
+
+
 parent_state = {"begin recording": ["all start", "finish recording", "cancel recording"],
                 "robot look": ["begin recording", "stop segment", "robot look"],
                 "begin segment": ["robot look"],
                 "stop segment": ["begin segment", "new segment"],
                 "new segment": ["stop segment","begin recording"],
-                "stop recording": ["stop segment"],
-                "finish recording": ["stop recording", "stop segment"],
-                "cancel recording": ["stop recording", "begin recording", "robot look", "begin segment", "stop segment", "new segment"],
+                "check demo": ["stop segment"],
+                "finish recording": ["check demo", "stop segment"],
+                "cancel recording": ["check demo", "begin recording", "robot look", "begin segment", "stop segment", "new segment"],
                 "done session": ["finish recording", "cancel recording", "all start"]}
 
 
@@ -70,7 +81,7 @@ class voice_cmd_demo_recording:
     
     def speechCb(self, msg):
         rospy.loginfo(msg.data)
-        commands = ["begin recording", "stop recording", "begin segment", "stop segment", "robot look", "new segment", "cancel recording", "finish recording", "done session"]
+        commands = ["begin recording", "check demo", "begin segment", "stop segment", "robot look", "new segment", "cancel recording", "finish recording", "done session"]
         for i, command in enumerate(commands):
             if msg.data.find(command) > -1:
                 print command
